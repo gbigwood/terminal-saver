@@ -6,7 +6,6 @@ import string
 
 def main(stdscr):
 
-    # Clear screen
     hiragana = ''.join(chr(i) for i in range(0x3040, 0x30a0))
     katakana = ''.join(chr(i) for i in range(0x30a0, 0x3100))
     latin_1_supplement = ''.join(chr(i) for i in range(0x00c0, 0x0100))
@@ -75,6 +74,6 @@ def main(stdscr):
         time.sleep(0.1)
         # normalize_characters()
 
-    stdscr.getkey() # wait for user input
+    # stdscr.getkey() # wait for user input
 
 wrapper(main)
