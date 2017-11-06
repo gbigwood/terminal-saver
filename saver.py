@@ -3,22 +3,32 @@ from curses import wrapper
 import random
 import time
 import string
+import signal
+import sys
+
+
+def signal_handler(signal, frame):
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+
 
 def main(stdscr):
-
     hiragana = ''.join(chr(i) for i in range(0x3040, 0x30a0))
     katakana = ''.join(chr(i) for i in range(0x30a0, 0x3100))
     latin_1_supplement = ''.join(chr(i) for i in range(0x00c0, 0x0100))
-    chars_to_use = string.digits+ string.ascii_letters + string.punctuation+ latin_1_supplement # + hiragana + katakana
-    #chars_to_use = string.hexdigits
+    chars_to_use = string.digits+ string.ascii_letters + string.punctuation + latin_1_supplement  # + hiragana + katakana
+    # chars_to_use = string.hexdigits
+
     def fill_screen():
         for y_pos in range(1, curses.LINES-1):
             for x_pos in range(1, curses.COLS-1):
-                if x_pos %3 != 0:
+                if x_pos % 3 != 0:
                     stdscr.addch(y_pos, x_pos, random.choice(chars_to_use))
         stdscr.refresh()
 
-    def normalize_characters(normalisation_chance = 0.001):
+    def normalize_characters(normalisation_chance=0.001):
         for y_pos in range(1, curses.LINES-1):
             for x_pos in range(1, curses.COLS-1):
                 if normalisation_chance == 1 or random.random() < normalisation_chance:
@@ -30,7 +40,7 @@ def main(stdscr):
         for i in range(num_chars_to_update):
             y_pos = random.randint(1, curses.LINES-2)
             x_pos = random.randint(1, curses.COLS-2)
-            if (x_pos %3 != 0):
+            if (x_pos % 3 != 0):
                 ch_got = stdscr.inch(y_pos, x_pos)
                 attrs = ch_got & curses.A_ATTRIBUTES
 
@@ -52,7 +62,7 @@ def main(stdscr):
         for i in range(num_chars_to_update):
             y_pos = random.randint(1, curses.LINES-2)
             x_pos = random.randint(1, curses.COLS-2)
-            if x_pos %3 != 0:
+            if x_pos % 3 != 0:
                 stdscr.addch(
                         y_pos,
                         x_pos,
@@ -75,5 +85,6 @@ def main(stdscr):
         # normalize_characters()
 
     # stdscr.getkey() # wait for user input
+
 
 wrapper(main)
